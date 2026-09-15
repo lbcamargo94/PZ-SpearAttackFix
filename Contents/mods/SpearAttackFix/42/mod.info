@@ -1,6 +1,6 @@
 name=Spear Attack Fix
 id=SpearAttackFix
-description=Corrige o bug onde o ataque de lanca varia de animacao dependendo do local do mapa (ex: uma "estocada" mais lenta perto de cercas altas). Unifica os tipos de ataque Default, Stab e Overhead para sempre usar a mesma animacao rapida padrao, independente da circunstancia.
-modversion=1.0.0
+description=Corrige o bug onde o ataque de lanca varia de animacao dependendo do local do mapa (ex: uma "estocada" mais lenta perto de cercas altas). Acelera as animacoes de estocada e golpe por cima para o mesmo ritmo do ataque padrao, mantendo as animacoes originais (e a deteccao de acerto original) intactas.
+modversion=1.1.0
 pzversion=42
 poster=poster.png

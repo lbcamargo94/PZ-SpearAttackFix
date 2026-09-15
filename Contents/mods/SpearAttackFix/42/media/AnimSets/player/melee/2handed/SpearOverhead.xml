@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animNode x_extends="SpearDefault.xml">
 	<m_Name>SpearOverhead</m_Name>
-	<m_AnimName>Bob_AttackSpear02_Hit</m_AnimName>
+	<m_AnimName>Bob_AttackSpear01_Hit</m_AnimName>
+	<m_SpeedScale>1.5</m_SpeedScale>
 	<m_Conditions x_name="88ccd811-d0fa-4969-a5e4-310120f26b10">
 		<m_Value>overhead</m_Value>
 	</m_Conditions>

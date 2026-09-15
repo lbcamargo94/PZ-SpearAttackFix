@@ -18,9 +18,9 @@ O combate de lança do B42 escolhe entre 3 animações de ataque dependendo da s
 
 [h2]O que o mod faz[/h2]
 
-Este mod unifica as três variantes (Default, Stab e Overhead) para sempre reproduzir a mesma animação rápida do ataque padrão, não importa a situação. O gatilho interno do jogo continua existindo, mas todas as opções agora levam ao mesmo resultado visual.
+Este mod acelera as animações Stab e Overhead para o mesmo ritmo do ataque Default, sem trocar qual animação é reproduzida em cada uma. O gatilho interno do jogo continua existindo, mas as três variantes agora têm a mesma velocidade.
 
-[b]Importante:[/b] o mod só troca qual animação é reproduzida. Ele não altera dano, alcance, chance de crítico nem qualquer outro valor de balanceamento da lança — nenhum arquivo de item foi modificado.
+[b]Importante:[/b] o mod só ajusta a velocidade de reprodução da animação. Ele não altera dano, alcance, chance de crítico, detecção de acerto nem qualquer outro valor de balanceamento da lança — nenhum arquivo de item foi modificado.
 
 [h2]O que não é afetado[/h2]
 [list]
@@ -55,9 +55,9 @@ B42's spear combat picks between 3 attack animations depending on the situation:
 
 [h2]What this mod does[/h2]
 
-This mod unifies all three variants (Default, Stab and Overhead) to always play the same fast, standard attack animation, regardless of the situation. The game's internal trigger still exists, but every path now leads to the same visual result.
+This mod speeds up the Stab and Overhead animations to match the Default attack's pace, without changing which animation plays for each one. The game's internal trigger still exists, but all three variants now share the same speed.
 
-[b]Important:[/b] the mod only changes which animation plays. It does not touch damage, range, critical chance, or any other spear balance value — no item file was modified.
+[b]Important:[/b] the mod only adjusts animation playback speed. It does not touch damage, range, critical chance, hit detection, or any other spear balance value — no item file was modified.
 
 [h2]What is not affected[/h2]
 [list]
@@ -79,5 +79,5 @@ This mod unifies all three variants (Default, Stab and Overhead) to always play 
 [*] Workshop ID: [b]3801423705[/b]
 [*] Mod ID: [b]SpearAttackFix[/b]
 [/list]"
-	"changenote"		"v1.0.0 - adiciona Workshop ID e Mod ID na descricao"
+	"changenote"		"v1.1.0 - CORRECAO IMPORTANTE: a v1.0.0 trocava a animacao de Stab/Overhead pela do Default, o que quebrava a deteccao de acerto (o som tocava mas o dano nao era aplicado). Agora o mod mantem as animacoes originais e so acelera a velocidade de reproducao (m_SpeedScale) - deteccao de acerto volta ao normal, e o ritmo fica igual ao ataque padrao."
 }

@@ -10,9 +10,9 @@ O combate de lança do B42 escolhe entre 3 animações de ataque dependendo da s
 
 ## O que o mod faz
 
-Unifica as três variantes (Default, Stab e Overhead) para sempre reproduzir a mesma animação rápida do ataque padrão, independente da situação. Como o timing de acerto (`AttackCollisionCheck`) já era herdado do Default via `x_extends`, o resultado não é só visual — o acerto fica tecnicamente mais preciso também.
+Acelera as animações **Stab** e **Overhead** (via `m_SpeedScale`) para o mesmo ritmo do ataque **Default**, sem trocar qual clipe de animação é reproduzido. Nenhum outro dado é alterado — dano, alcance, chance de crítico, e a detecção de acerto (`AttackCollisionCheck`) continuam exatamente como no vanilla, já que a animação em si não muda, só a velocidade de reprodução.
 
-O mod só troca qual animação é reproduzida. Não altera dano, alcance, chance de crítico ou qualquer outro valor de balanceamento — nenhum arquivo de item foi modificado.
+> **Nota técnica (v1.0.0 → v1.1.0):** a v1.0.0 tentava trocar qual animação tocava (reaproveitando o clipe do Default nos três casos), mas isso quebrava a detecção de acerto — o ataque tocava o som mas não registrava dano. A v1.1.0 usa uma abordagem mais segura: mantém as animações originais (e o comportamento de acerto original, comprovadamente funcional) e só ajusta a velocidade.
 
 ### O que não é afetado (de propósito)
 
