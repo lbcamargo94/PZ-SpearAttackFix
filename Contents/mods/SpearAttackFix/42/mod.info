@@ -1,6 +1,9 @@
 name=Spear Attack Fix
 id=SpearAttackFix
-description=Corrige o bug onde o ataque de lanca varia de animacao dependendo do local do mapa (ex: uma "estocada" mais lenta perto de cercas altas). Acelera as animacoes de estocada e golpe por cima para o mesmo ritmo do ataque padrao, mantendo as animacoes originais (e a deteccao de acerto original) intactas.
-modversion=1.1.0
+description=Corrige na origem o bug onde o jogo forca o ataque de lanca "golpe por cima" (mais lento) perto de obstaculos como cercas altas. Usa um patch Java (via ZombieBuddy) no metodo exato que causa o bug, em vez de mexer nas animacoes.
+modversion=2.0.0
 pzversion=42
 poster=poster.png
+require=\ZombieBuddy
+javaJarFile=media/java/SpearAttackFix.jar
+javaPkgName=com.pzrank.spearattackfix

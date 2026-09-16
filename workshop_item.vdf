@@ -8,33 +8,32 @@
 	"title"		"Spear Attack Fix"
 	"description"		"[h1]BR - Spear Attack Fix[/h1]
 
-Corrige um bug de animação no combate com lanças: em determinados locais do mapa (perto de cercas altas de metal, por exemplo), o jogo troca automaticamente o ataque normal por uma estocada bem mais lenta — sem nenhuma ação do jogador.
+Corrige, na origem, um bug de combate com lanças: perto de certos obstáculos (cercas altas de metal, por exemplo), o jogo força um ataque "golpe por cima" bem mais lento, e o acerto frequentemente não registra — o som toca, mas o zumbi não recebe dano. Bug relatado pela comunidade desde o Build 42.18, sem correção oficial ainda.
 
 [hr][/hr]
 
-[h2]O bug[/h2]
+[h2]A causa raiz[/h2]
 
-O combate de lança do B42 escolhe entre 3 animações de ataque dependendo da situação: [b]Default[/b] (o golpe normal, rápido), [b]Stab[/b] (uma estocada mais lenta) e [b]Overhead[/b] (golpe por cima). Em certos pontos do mapa o jogo ativa a variante Stab por engano, deixando o combate visivelmente mais lento e menos responsivo do que deveria.
+Decompilamos o jogo pra encontrar a origem exata: em zombie.CombatManager.pressedAttack(), quando o alvo está a mais de 1.25 tiles de distância E "isolado" (sem outro personagem em 1.7 tiles), o jogo força AttackType.OVERHEAD (o golpe lento por cima). Perto de obstáculos como cercas altas, esse cálculo dispara incorretamente mesmo com o zumbi bem próximo, do outro lado da cerca.
 
 [h2]O que o mod faz[/h2]
 
-Este mod acelera as animações Stab e Overhead para o mesmo ritmo do ataque Default, sem trocar qual animação é reproduzida em cada uma. O gatilho interno do jogo continua existindo, mas as três variantes agora têm a mesma velocidade.
+Usa um patch de bytecode Java (via [b]ZombieBuddy[/b]) que intercepta o método que define o tipo de ataque, e bloqueia especificamente o valor problemático (confirmado ser o único lugar em todo o jogo que o define — seguro, sem afetar outros usos). Nenhuma animação, dano, alcance ou detecção de acerto é alterado — o mod impede o gatilho bugado, em vez de tentar disfarçar o sintoma.
 
-[b]Importante:[/b] o mod só ajusta a velocidade de reprodução da animação. Ele não altera dano, alcance, chance de crítico, detecção de acerto nem qualquer outro valor de balanceamento da lança — nenhum arquivo de item foi modificado.
+[b]Requisito obrigatório:[/b] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3619862853]ZombieBuddy[/url] precisa estar instalado e ativado.
 
-[h2]O que não é afetado[/h2]
+[h2]O que não é afetado (de propósito)[/h2]
 [list]
-[*] Ataque em zumbi já caído no chão (finalização) — continua com sua própria animação, sem relação com o bug relatado
-[*] Ataque de investida durante corrida (Charge) — mantido como está por ter timing de acerto próprio; alterá-lo sem ajustes poderia descolar a hitbox da animação
+[*] Ataque em zumbi já caído no chão (finalização) — mecanismo separado
+[*] Ataque de investida durante corrida (Charge) — sem relação com o bug
+[*] Variação aleatória entre ataque normal e estocada durante combate comum — comportamento vanilla intencional
 [/list]
 
 [h2]Compatibilidade[/h2]
 [list]
 [*] [b]Build 42.20.x[/b] — Single Player e Multiplayer
-[*] Apenas substitui 2 arquivos de animação (AnimSets) — não toca em saves, personagens ou itens existentes
+[*] Não toca em saves, personagens ou itens existentes
 [*] Seguro para adicionar ou remover de uma run em andamento
-[*] Em multiplayer, para a visualização ficar consistente entre todos os jogadores, o ideal é que o servidor e todos os clientes tenham o mod ativado
-[*] Pode conflitar apenas com outros mods que também alterem a animação de ataque de lança (SpearStab.xml / SpearOverhead.xml)
 [/list]
 
 [h2]IDs para servidor[/h2]
@@ -47,31 +46,30 @@ Este mod acelera as animações Stab e Overhead para o mesmo ritmo do ataque Def
 
 [h1]EN - Spear Attack Fix[/h1]
 
-Fixes a spear combat animation bug: in certain map locations (near tall metal fences, for example), the game automatically swaps the normal attack for a much slower stab — with no action from the player.
+Fixes, at the root, a spear combat bug: near certain obstacles (tall metal fences, for example), the game forces a much slower "overhead" attack, and the hit frequently fails to register — the sound plays, but the zombie takes no damage. Reported by the community since Build 42.18, with no official fix yet.
 
-[h2]The bug[/h2]
+[h2]The root cause[/h2]
 
-B42's spear combat picks between 3 attack animations depending on the situation: [b]Default[/b] (the normal, fast swing), [b]Stab[/b] (a slower thrust) and [b]Overhead[/b] (an overhead swing). At certain map spots the game mistakenly triggers the Stab variant, making combat noticeably slower and less responsive than it should be.
+We decompiled the game to find the exact origin: in zombie.CombatManager.pressedAttack(), when the target is more than 1.25 tiles away AND "isolated" (no other character within 1.7 tiles), the game forces AttackType.OVERHEAD (the slow overhead swing). Near obstacles like tall fences, this calculation misfires even when the zombie is right there, on the other side of the fence.
 
 [h2]What this mod does[/h2]
 
-This mod speeds up the Stab and Overhead animations to match the Default attack's pace, without changing which animation plays for each one. The game's internal trigger still exists, but all three variants now share the same speed.
+Uses a Java bytecode patch (via [b]ZombieBuddy[/b]) that intercepts the method that sets the attack type, and specifically blocks the problematic value (confirmed to be the only place in the entire game that sets it — safe, with no effect on any other legitimate use). No animation, damage, range, or hit detection is changed — the mod prevents the buggy trigger instead of masking the symptom.
 
-[b]Important:[/b] the mod only adjusts animation playback speed. It does not touch damage, range, critical chance, hit detection, or any other spear balance value — no item file was modified.
+[b]Required dependency:[/b] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3619862853]ZombieBuddy[/url] must be installed and enabled.
 
-[h2]What is not affected[/h2]
+[h2]What is not affected (on purpose)[/h2]
 [list]
-[*] Finishing attack on a downed zombie — keeps its own animation, unrelated to the reported bug
-[*] Charging attack while sprinting — left untouched, since it has its own hit-timing and changing it without adjustments could desync the hitbox from the animation
+[*] Finishing attack on a downed zombie — separate mechanism
+[*] Charging attack while sprinting — unrelated to the bug
+[*] Random variation between normal and stab attacks during regular combat — intentional vanilla behavior
 [/list]
 
 [h2]Compatibility[/h2]
 [list]
 [*] [b]Build 42.20.x[/b] — Single Player and Multiplayer
-[*] Only overrides 2 animation files (AnimSets) — does not touch saves, characters, or existing items
+[*] Does not touch saves, characters, or existing items
 [*] Safe to add or remove mid-run
-[*] In multiplayer, for consistent visuals across all players, the server and every client should have the mod enabled
-[*] May only conflict with other mods that also change spear attack animations (SpearStab.xml / SpearOverhead.xml)
 [/list]
 
 [h2]Server IDs[/h2]
@@ -79,5 +77,5 @@ This mod speeds up the Stab and Overhead animations to match the Default attack'
 [*] Workshop ID: [b]3801423705[/b]
 [*] Mod ID: [b]SpearAttackFix[/b]
 [/list]"
-	"changenote"		"v1.1.0 - CORRECAO IMPORTANTE: a v1.0.0 trocava a animacao de Stab/Overhead pela do Default, o que quebrava a deteccao de acerto (o som tocava mas o dano nao era aplicado). Agora o mod mantem as animacoes originais e so acelera a velocidade de reproducao (m_SpeedScale) - deteccao de acerto volta ao normal, e o ritmo fica igual ao ataque padrao."
+	"changenote"		"v2.0.0 - REESCRITA COMPLETA: corrige o bug na causa raiz via patch Java (ZombieBuddy), em vez de mexer em arquivos de animacao. As tentativas anteriores (v1.0.0, v1.1.0) mexiam nos AnimSets e nao resolviam a deteccao de acerto de verdade. Decompilamos o jogo, achamos que o bug esta em zombie.CombatManager.pressedAttack() forcando AttackType.OVERHEAD incorretamente perto de obstaculos, e bloqueamos isso na origem. REQUER ZombieBuddy instalado."
 }

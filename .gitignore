@@ -2,3 +2,6 @@
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Java build artifacts (o .jar final fica em Contents/mods/.../media/java/, esse aqui e so o intermediario)
+java/build/

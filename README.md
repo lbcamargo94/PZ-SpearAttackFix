@@ -1,31 +1,46 @@
 # Spear Attack Fix
 
-Mod para **Project Zomboid Build 42+** que corrige um bug de animação no combate com lanças: em determinados locais do mapa (perto de cercas altas de metal, por exemplo), o jogo troca automaticamente o ataque normal por uma "estocada" bem mais lenta, sem nenhuma ação do jogador.
+Mod para **Project Zomboid Build 42+** que corrige, na origem, um bug de combate com lanças: perto de certos obstáculos (cercas altas de metal, por exemplo), o jogo força um ataque "golpe por cima" bem mais lento, e o acerto frequentemente não registra — o som toca, mas o zumbi não recebe dano.
+
+Bug relatado pela comunidade desde o Build 42.18, sem correção oficial da Indie Stone até o momento ([thread no fórum oficial](https://theindiestone.com/forums/topic/95691-bug-found-in-project-zomboid-build-4218-spear-attack-issue-in-a-specific-location/)).
 
 ---
 
-## O bug
+## A causa raiz
 
-O combate de lança do B42 escolhe entre 3 animações de ataque dependendo da situação: **Default** (golpe normal, rápido), **Stab** (estocada mais lenta) e **Overhead** (golpe por cima). Em certos pontos do mapa o jogo ativa a variante Stab por engano.
+Decompilando o jogo, encontramos a origem exata em `zombie.CombatManager.pressedAttack(IsoPlayer)`:
+
+```java
+if (!isoPlayer.getAttackVars().aimAtFloor && closestDist > 1.25f && weaponType == WeaponType.SPEAR
+    && (closestToTarget == null || IsoUtils.DistanceTo(...) > 1.7f)) {
+    isoPlayer.setAttackType(AttackType.OVERHEAD);
+    ...
+}
+```
+
+Essa é uma mecânica intencional do jogo (golpe por cima quando o alvo está "distante e isolado"), mas perto de obstáculos como cercas altas, o cálculo de distância/isolamento dispara incorretamente mesmo com o zumbi bem próximo, do outro lado do obstáculo — resultando no ataque lento e na falha de acerto.
 
 ## O que o mod faz
 
-Acelera as animações **Stab** e **Overhead** (via `m_SpeedScale`) para o mesmo ritmo do ataque **Default**, sem trocar qual clipe de animação é reproduzido. Nenhum outro dado é alterado — dano, alcance, chance de crítico, e a detecção de acerto (`AttackCollisionCheck`) continuam exatamente como no vanilla, já que a animação em si não muda, só a velocidade de reprodução.
+Usa um **patch de bytecode Java** (via [ZombieBuddy](https://steamcommunity.com/sharedfiles/filedetails/?id=3619862853)) que intercepta `IsoPlayer.setAttackType()` e bloqueia especificamente o valor `AttackType.OVERHEAD` — confirmado ser o **único lugar em todo o jogo** que define esse valor, então bloqueá-lo não afeta nenhum outro uso legítimo. Nenhuma animação, dano, alcance ou detecção de acerto é modificado — o mod impede que o gatilho bugado aconteça, em vez de tentar consertar o sintoma depois.
 
-> **Nota técnica (v1.0.0 → v1.1.0):** a v1.0.0 tentava trocar qual animação tocava (reaproveitando o clipe do Default nos três casos), mas isso quebrava a detecção de acerto — o ataque tocava o som mas não registrava dano. A v1.1.0 usa uma abordagem mais segura: mantém as animações originais (e o comportamento de acerto original, comprovadamente funcional) e só ajusta a velocidade.
+> **Nota técnica (histórico):** as versões v1.0.0 e v1.1.0 tentavam corrigir isso via arquivos de animação (`AnimSets`), trocando qual clipe tocava ou sua velocidade. Testes reais mostraram que isso não resolvia a detecção de acerto — a causa real não estava na animação, e sim no valor `AttackType` sendo forçado incorretamente pelo motor do jogo. A v2.0.0 corrige na origem.
 
 ### O que não é afetado (de propósito)
 
-- **Ataque em zumbi caído no chão** (`SpearOnFloor`) — mecanismo separado, sem relação com o bug relatado
-- **Ataque de investida durante corrida** (`SpearCharge`) — definição independente, com timing de colisão próprio; alterá-la sem recalibrar o timing arriscaria descolar o acerto da animação
+- **Ataque em zumbi caído no chão** (`SpearOnFloor`) — mecanismo separado, sem relação com o bug
+- **Ataque de investida durante corrida** (`SpearCharge`) — independente, sem relação
+- **Variação aleatória Stab vs Default** durante combate normal — comportamento vanilla intencional, não é o bug relatado
+
+## Requisitos
+
+- **[ZombieBuddy](https://steamcommunity.com/sharedfiles/filedetails/?id=3619862853)** — obrigatório. É o framework que permite o patch Java. Instale e ative antes deste mod.
 
 ## Compatibilidade
 
 | Build | Suporte |
 |-------|---------|
 | 42.20.x | ✔ Compatível (Single Player e Multiplayer) |
-
-Apenas substitui 2 arquivos de animação (`AnimSets`) — seguro para adicionar ou remover de uma run em andamento, não afeta saves existentes.
 
 ## IDs
 
