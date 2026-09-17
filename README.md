@@ -25,11 +25,14 @@ Essa é uma mecânica intencional do jogo (golpe por cima quando o alvo está "d
 Usa um **patch de bytecode Java** (via [ZombieBuddy](https://steamcommunity.com/sharedfiles/filedetails/?id=3619862853)) que intercepta `IsoPlayer.setAttackType()` e bloqueia especificamente o valor `AttackType.OVERHEAD` — confirmado ser o **único lugar em todo o jogo** que define esse valor, então bloqueá-lo não afeta nenhum outro uso legítimo. Nenhuma animação, dano, alcance ou detecção de acerto é modificado — o mod impede que o gatilho bugado aconteça, em vez de tentar consertar o sintoma depois.
 
 > **Nota técnica (histórico):** as versões v1.0.0 e v1.1.0 tentavam corrigir isso via arquivos de animação (`AnimSets`), trocando qual clipe tocava ou sua velocidade. Testes reais mostraram que isso não resolvia a detecção de acerto — a causa real não estava na animação, e sim no valor `AttackType` sendo forçado incorretamente pelo motor do jogo. A v2.0.0 corrige na origem.
+>
+> **Nota técnica (v2.1.0):** a v2.0.0 declarava a classe do patch Java num pacote (`com.pzrank.spearattackfix.patches`) diferente do `javaPkgName` do `mod.info` (`com.pzrank.spearattackfix`). O ZombieBuddy exige igualdade exata de pacote para reconhecer uma classe como patch — por isso o bloqueio nunca chegou a ser aplicado de verdade, mesmo com o mod "carregando" sem erro nenhum. A v2.1.0 corrige movendo a classe pro pacote certo; confirmado ao vivo, com log mostrando `patching zombie.characters.IsoPlayer.setAttackType` e o bloqueio realmente disparando durante o combate.
 
 ### O que não é afetado (de propósito)
 
 - **Ataque em zumbi caído no chão** (`SpearOnFloor`) — mecanismo separado, sem relação com o bug
 - **Ataque de investida durante corrida** (`SpearCharge`) — independente, sem relação
+- **Ataque de estocada atravessando cerca/janela** (`AttackType.SPEAR_STAB`, via `HandWeapon.canAttackPierceTransparentWall`) — mecanismo legítimo do jogo, não é o bug
 - **Variação aleatória Stab vs Default** durante combate normal — comportamento vanilla intencional, não é o bug relatado
 
 ## Requisitos

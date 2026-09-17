@@ -8,13 +8,13 @@
 	"title"		"Spear Attack Fix"
 	"description"		"[h1]BR - Spear Attack Fix[/h1]
 
-Corrige, na origem, um bug de combate com lanças: perto de certos obstáculos (cercas altas de metal, por exemplo), o jogo força um ataque "golpe por cima" bem mais lento, e o acerto frequentemente não registra — o som toca, mas o zumbi não recebe dano. Bug relatado pela comunidade desde o Build 42.18, sem correção oficial ainda.
+Corrige, na origem, um bug de combate com lanças: perto de certos obstáculos (cercas altas de metal, por exemplo), o jogo força um ataque [i]golpe por cima[/i] bem mais lento, e o acerto frequentemente não registra — o som toca, mas o zumbi não recebe dano. Bug relatado pela comunidade desde o Build 42.18, sem correção oficial ainda.
 
 [hr][/hr]
 
 [h2]A causa raiz[/h2]
 
-Decompilamos o jogo pra encontrar a origem exata: em zombie.CombatManager.pressedAttack(), quando o alvo está a mais de 1.25 tiles de distância E "isolado" (sem outro personagem em 1.7 tiles), o jogo força AttackType.OVERHEAD (o golpe lento por cima). Perto de obstáculos como cercas altas, esse cálculo dispara incorretamente mesmo com o zumbi bem próximo, do outro lado da cerca.
+Decompilamos o jogo pra encontrar a origem exata: em zombie.CombatManager.pressedAttack(), quando o alvo está a mais de 1.25 tiles de distância E [i]isolado[/i] (sem outro personagem em 1.7 tiles), o jogo força AttackType.OVERHEAD (o golpe lento por cima). Perto de obstáculos como cercas altas, esse cálculo dispara incorretamente mesmo com o zumbi bem próximo, do outro lado da cerca.
 
 [h2]O que o mod faz[/h2]
 
@@ -26,6 +26,7 @@ Usa um patch de bytecode Java (via [b]ZombieBuddy[/b]) que intercepta o método 
 [list]
 [*] Ataque em zumbi já caído no chão (finalização) — mecanismo separado
 [*] Ataque de investida durante corrida (Charge) — sem relação com o bug
+[*] Estocada ao atacar através de cerca/janela — mecanismo legítimo do jogo, não é o bug
 [*] Variação aleatória entre ataque normal e estocada durante combate comum — comportamento vanilla intencional
 [/list]
 
@@ -46,11 +47,11 @@ Usa um patch de bytecode Java (via [b]ZombieBuddy[/b]) que intercepta o método 
 
 [h1]EN - Spear Attack Fix[/h1]
 
-Fixes, at the root, a spear combat bug: near certain obstacles (tall metal fences, for example), the game forces a much slower "overhead" attack, and the hit frequently fails to register — the sound plays, but the zombie takes no damage. Reported by the community since Build 42.18, with no official fix yet.
+Fixes, at the root, a spear combat bug: near certain obstacles (tall metal fences, for example), the game forces a much slower [i]overhead[/i] attack, and the hit frequently fails to register — the sound plays, but the zombie takes no damage. Reported by the community since Build 42.18, with no official fix yet.
 
 [h2]The root cause[/h2]
 
-We decompiled the game to find the exact origin: in zombie.CombatManager.pressedAttack(), when the target is more than 1.25 tiles away AND "isolated" (no other character within 1.7 tiles), the game forces AttackType.OVERHEAD (the slow overhead swing). Near obstacles like tall fences, this calculation misfires even when the zombie is right there, on the other side of the fence.
+We decompiled the game to find the exact origin: in zombie.CombatManager.pressedAttack(), when the target is more than 1.25 tiles away AND [i]isolated[/i] (no other character within 1.7 tiles), the game forces AttackType.OVERHEAD (the slow overhead swing). Near obstacles like tall fences, this calculation misfires even when the zombie is right there, on the other side of the fence.
 
 [h2]What this mod does[/h2]
 
@@ -62,6 +63,7 @@ Uses a Java bytecode patch (via [b]ZombieBuddy[/b]) that intercepts the method t
 [list]
 [*] Finishing attack on a downed zombie — separate mechanism
 [*] Charging attack while sprinting — unrelated to the bug
+[*] Stab attack when hitting through a fence/window — legitimate game mechanic, not the bug
 [*] Random variation between normal and stab attacks during regular combat — intentional vanilla behavior
 [/list]
 
@@ -77,5 +79,5 @@ Uses a Java bytecode patch (via [b]ZombieBuddy[/b]) that intercepts the method t
 [*] Workshop ID: [b]3801423705[/b]
 [*] Mod ID: [b]SpearAttackFix[/b]
 [/list]"
-	"changenote"		"v2.0.0 - REESCRITA COMPLETA: corrige o bug na causa raiz via patch Java (ZombieBuddy), em vez de mexer em arquivos de animacao. As tentativas anteriores (v1.0.0, v1.1.0) mexiam nos AnimSets e nao resolviam a deteccao de acerto de verdade. Decompilamos o jogo, achamos que o bug esta em zombie.CombatManager.pressedAttack() forcando AttackType.OVERHEAD incorretamente perto de obstaculos, e bloqueamos isso na origem. REQUER ZombieBuddy instalado."
+	"changenote"		"v2.1.0 - fix CRITICO: o patch Java nunca era aplicado de verdade desde a v2.0.0 (o mod carregava sem erro, mas o pacote da classe do patch nao batia com o javaPkgName do mod.info, e o ZombieBuddy exige igualdade exata - entao o bloqueio do bug nunca disparava). Corrigido e confirmado ao vivo com log mostrando o bloqueio funcionando de verdade."
 }
