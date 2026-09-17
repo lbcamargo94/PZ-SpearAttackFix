@@ -79,5 +79,5 @@ Uses a Java bytecode patch (via [b]ZombieBuddy[/b]) that intercepts the method t
 [*] Workshop ID: [b]3801423705[/b]
 [*] Mod ID: [b]SpearAttackFix[/b]
 [/list]"
-	"changenote"		"v2.1.0 - fix CRITICO: o patch Java nunca era aplicado de verdade desde a v2.0.0 (o mod carregava sem erro, mas o pacote da classe do patch nao batia com o javaPkgName do mod.info, e o ZombieBuddy exige igualdade exata - entao o bloqueio do bug nunca disparava). Corrigido e confirmado ao vivo com log mostrando o bloqueio funcionando de verdade."
+	"changenote"		"v2.1.1 - sem mudanca de comportamento (continua so bloqueando AttackType.OVERHEAD, igual v2.1.0). Testamos tambem bloquear AttackType.SPEAR_STAB pra evitar a estocada aparecendo ocasionalmente sem zumbi visivel por perto, mas descobrimos que e a MESMA chamada do jogo (HandWeapon.canAttackPierceTransparentWall, dentro de CombatManager.calculateHitListWeapon) usada pro caso legitimo de atacar atraves de cerca - bloquear uma bloqueia a outra. Revertido; documentacao atualizada."
 }

@@ -1,7 +1,7 @@
 name=Spear Attack Fix
 id=SpearAttackFix
 description=Corrige na origem o bug onde o jogo forca o ataque de lanca "golpe por cima" (mais lento) perto de obstaculos como cercas altas. Usa um patch Java (via ZombieBuddy) no metodo exato que causa o bug, em vez de mexer nas animacoes.
-modversion=2.1.0
+modversion=2.1.1
 pzversion=42
 poster=poster.png
 require=\ZombieBuddy

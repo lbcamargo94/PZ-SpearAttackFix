@@ -32,7 +32,7 @@ Usa um **patch de bytecode Java** (via [ZombieBuddy](https://steamcommunity.com/
 
 - **Ataque em zumbi caído no chão** (`SpearOnFloor`) — mecanismo separado, sem relação com o bug
 - **Ataque de investida durante corrida** (`SpearCharge`) — independente, sem relação
-- **Ataque de estocada atravessando cerca/janela** (`AttackType.SPEAR_STAB`, via `HandWeapon.canAttackPierceTransparentWall`) — mecanismo legítimo do jogo, não é o bug
+- **Ataque de estocada atravessando cerca/janela** (`AttackType.SPEAR_STAB`) — mecanismo legítimo do jogo (`HandWeapon.canAttackPierceTransparentWall`), não é o bug; pode aparecer ocasionalmente "no ar" quando há um zumbi fora de vista atrás de algo transparente, mas não dá pra bloquear isso sem também quebrar o caso legítimo (mesma chamada do jogo pros dois casos) — decisão consciente de deixar como vanilla
 - **Variação aleatória Stab vs Default** durante combate normal — comportamento vanilla intencional, não é o bug relatado
 
 ## Requisitos

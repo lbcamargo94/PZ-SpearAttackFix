@@ -20,7 +20,13 @@ import zombie.AttackType;
  * AttackType.SPEAR_STAB (setado em HandWeapon.canAttackPierceTransparentWall,
  * quando o jogo confirma que a lanca pode atravessar uma parede transparente
  * tipo cerca/janela) NAO e bloqueado - e o mecanismo legitimo de atacar
- * atraves da cerca, nao faz parte do bug.
+ * atraves da cerca. Ocasionalmente aparece "no ar" quando ha um zumbi fora
+ * de vista atras de algo transparente (canAttackPierceTransparentWall roda
+ * dentro de CombatManager.calculateHitListWeapon(), que avalia QUALQUER
+ * candidato proximo atras de parede transparente, nao so quando o golpe
+ * realmente acerta) - mas isso e a MESMA chamada do caso legitimo, entao
+ * nao da pra bloquear um sem bloquear o outro (testado: bloquear os dois
+ * mata a animacao de estocada por completo, ate no caso legitimo).
  */
 @Patch(className = "zombie.characters.IsoPlayer", methodName = "setAttackType")
 public class PatchSetAttackType {
