@@ -17,16 +17,10 @@ import zombie.AttackType;
  * todo o jogo (confirmado via decompilacao) - bloquear especificamente
  * esse valor aqui e seguro, sem afetar nenhum outro uso legitimo.
  *
- * AttackType.SPEAR_STAB (setado em HandWeapon.canAttackPierceTransparentWall,
- * quando o jogo confirma que a lanca pode atravessar uma parede transparente
- * tipo cerca/janela) NAO e bloqueado - e o mecanismo legitimo de atacar
- * atraves da cerca. Ocasionalmente aparece "no ar" quando ha um zumbi fora
- * de vista atras de algo transparente (canAttackPierceTransparentWall roda
- * dentro de CombatManager.calculateHitListWeapon(), que avalia QUALQUER
- * candidato proximo atras de parede transparente, nao so quando o golpe
- * realmente acerta) - mas isso e a MESMA chamada do caso legitimo, entao
- * nao da pra bloquear um sem bloquear o outro (testado: bloquear os dois
- * mata a animacao de estocada por completo, ate no caso legitimo).
+ * AttackType.SPEAR_STAB (a estocada) NAO e bloqueado aqui - e o mecanismo
+ * legitimo de atacar atraves de cerca/janela. A variante "fantasma" dele
+ * (aparecendo sem nada relevante por perto, ver [[PatchWindowBypassRange]])
+ * e corrigida na origem, entao nao precisa de tratamento especial aqui.
  */
 @Patch(className = "zombie.characters.IsoPlayer", methodName = "setAttackType")
 public class PatchSetAttackType {
@@ -41,9 +35,6 @@ public class PatchSetAttackType {
     // corrigido (confirmado via log que ficou assim desde a v2.0.0).
     @Patch.OnEnter(skipOn = true)
     public static boolean enter(@Patch.Argument(0) AttackType attackType) {
-        // Retorna true (skip) so pra OVERHEAD - todos os outros AttackType
-        // (default, spearstab, charge, etc.) continuam funcionando
-        // exatamente como no vanilla.
         return attackType == AttackType.OVERHEAD;
     }
 }

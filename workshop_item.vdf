@@ -4,21 +4,23 @@
 	"publishedfileid"		"3801423705"
 	"contentfolder"		"D:\workspace\PZ-SpearAttackFix\Contents"
 	"previewfile"		"D:\workspace\PZ-SpearAttackFix\preview.png"
-	"visibility"		"2"
+	"visibility"		"0"
 	"title"		"Spear Attack Fix"
 	"description"		"[h1]BR - Spear Attack Fix[/h1]
 
-Corrige, na origem, um bug de combate com lanças: perto de certos obstáculos (cercas altas de metal, por exemplo), o jogo força um ataque [i]golpe por cima[/i] bem mais lento, e o acerto frequentemente não registra — o som toca, mas o zumbi não recebe dano. Bug relatado pela comunidade desde o Build 42.18, sem correção oficial ainda.
+Corrige, na origem, dois bugs de combate com lanças: (1) perto de certos obstáculos (cercas altas de metal, por exemplo), o jogo força um ataque [i]golpe por cima[/i] bem mais lento, e o acerto frequentemente não registra — o som toca, mas o zumbi não recebe dano; (2) a animação de estocada pode disparar "no ar", sem zumbi nem obstáculo visível por perto, causada por uma janela barricada em qualquer lugar do mapa carregado, mesmo a dezenas de tiles de distância. Bug 1 relatado pela comunidade desde o Build 42.18, sem correção oficial ainda.
 
 [hr][/hr]
 
 [h2]A causa raiz[/h2]
 
-Decompilamos o jogo pra encontrar a origem exata: em zombie.CombatManager.pressedAttack(), quando o alvo está a mais de 1.25 tiles de distância E [i]isolado[/i] (sem outro personagem em 1.7 tiles), o jogo força AttackType.OVERHEAD (o golpe lento por cima). Perto de obstáculos como cercas altas, esse cálculo dispara incorretamente mesmo com o zumbi bem próximo, do outro lado da cerca.
+[b]Bug 1:[/b] decompilamos o jogo pra encontrar a origem exata: em zombie.CombatManager.pressedAttack(), quando o alvo está a mais de 1.25 tiles de distância E [i]isolado[/i] (sem outro personagem em 1.7 tiles), o jogo força AttackType.OVERHEAD (o golpe lento por cima). Perto de obstáculos como cercas altas, esse cálculo dispara incorretamente mesmo com o zumbi bem próximo, do outro lado da cerca.
+
+[b]Bug 2:[/b] o jogo varre TODAS as janelas do mapa carregado a cada frame (mesmo sem o jogador atacar de verdade, só pra destacar alvos na tela) — sem nenhuma checagem de distância. Pra cada janela barricada, pergunta se a lança consegue ultrapassar a barricada, e essa checagem já seta a animação de estocada como efeito colateral, mesmo a dezenas de tiles de distância. Confirmado ao vivo: uma janela barricada a 62 tiles disparava a estocada continuamente.
 
 [h2]O que o mod faz[/h2]
 
-Usa um patch de bytecode Java (via [b]ZombieBuddy[/b]) que intercepta o método que define o tipo de ataque, e bloqueia especificamente o valor problemático (confirmado ser o único lugar em todo o jogo que o define — seguro, sem afetar outros usos). Nenhuma animação, dano, alcance ou detecção de acerto é alterado — o mod impede o gatilho bugado, em vez de tentar disfarçar o sintoma.
+Usa patches de bytecode Java (via [b]ZombieBuddy[/b]): intercepta o método que define o tipo de ataque e bloqueia especificamente o golpe por cima bugado (confirmado ser o único lugar em todo o jogo que o define); e intercepta a checagem de barricada de janela, pulando-a quando a janela está fora de qualquer alcance realista de arma corpo a corpo. Nenhuma animação, dano, alcance ou detecção de acerto é alterado nos casos legítimos — o mod impede os gatilhos bugados, em vez de tentar disfarçar o sintoma.
 
 [b]Requisito obrigatório:[/b] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3619862853]ZombieBuddy[/url] precisa estar instalado e ativado.
 
@@ -26,7 +28,7 @@ Usa um patch de bytecode Java (via [b]ZombieBuddy[/b]) que intercepta o método 
 [list]
 [*] Ataque em zumbi já caído no chão (finalização) — mecanismo separado
 [*] Ataque de investida durante corrida (Charge) — sem relação com o bug
-[*] Estocada ao atacar através de cerca/janela — mecanismo legítimo do jogo, não é o bug
+[*] Estocada ao atacar através de cerca/janela de perto — mecanismo legítimo do jogo, continua funcionando normal
 [*] Variação aleatória entre ataque normal e estocada durante combate comum — comportamento vanilla intencional
 [/list]
 
@@ -47,15 +49,17 @@ Usa um patch de bytecode Java (via [b]ZombieBuddy[/b]) que intercepta o método 
 
 [h1]EN - Spear Attack Fix[/h1]
 
-Fixes, at the root, a spear combat bug: near certain obstacles (tall metal fences, for example), the game forces a much slower [i]overhead[/i] attack, and the hit frequently fails to register — the sound plays, but the zombie takes no damage. Reported by the community since Build 42.18, with no official fix yet.
+Fixes, at the root, two spear combat bugs: (1) near certain obstacles (tall metal fences, for example), the game forces a much slower [i]overhead[/i] attack, and the hit frequently fails to register — the sound plays, but the zombie takes no damage; (2) the stab animation can trigger "in mid-air", with no zombie or obstacle visible nearby, caused by a barricaded window anywhere on the loaded map, even dozens of tiles away. Bug 1 reported by the community since Build 42.18, with no official fix yet.
 
 [h2]The root cause[/h2]
 
-We decompiled the game to find the exact origin: in zombie.CombatManager.pressedAttack(), when the target is more than 1.25 tiles away AND [i]isolated[/i] (no other character within 1.7 tiles), the game forces AttackType.OVERHEAD (the slow overhead swing). Near obstacles like tall fences, this calculation misfires even when the zombie is right there, on the other side of the fence.
+[b]Bug 1:[/b] we decompiled the game to find the exact origin: in zombie.CombatManager.pressedAttack(), when the target is more than 1.25 tiles away AND [i]isolated[/i] (no other character within 1.7 tiles), the game forces AttackType.OVERHEAD (the slow overhead swing). Near obstacles like tall fences, this calculation misfires even when the zombie is right there, on the other side of the fence.
+
+[b]Bug 2:[/b] the game scans EVERY window on the currently loaded map every frame (even when the player isn't actually attacking, just for target highlighting) — with no distance check at all. For every barricaded window, it asks whether the spear can bypass the barricade, and that check alone sets the stab animation as a side effect, even dozens of tiles away. Confirmed live: a barricaded window 62 tiles away kept triggering the stab continuously.
 
 [h2]What this mod does[/h2]
 
-Uses a Java bytecode patch (via [b]ZombieBuddy[/b]) that intercepts the method that sets the attack type, and specifically blocks the problematic value (confirmed to be the only place in the entire game that sets it — safe, with no effect on any other legitimate use). No animation, damage, range, or hit detection is changed — the mod prevents the buggy trigger instead of masking the symptom.
+Uses Java bytecode patches (via [b]ZombieBuddy[/b]): intercepts the method that sets the attack type and specifically blocks the buggy overhead value (confirmed to be the only place in the entire game that sets it); and intercepts the window-barricade check, skipping it when the window is outside any realistic melee range. No animation, damage, range, or hit detection is changed for legitimate cases — the mod prevents the buggy triggers instead of masking the symptom.
 
 [b]Required dependency:[/b] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3619862853]ZombieBuddy[/url] must be installed and enabled.
 
@@ -63,7 +67,7 @@ Uses a Java bytecode patch (via [b]ZombieBuddy[/b]) that intercepts the method t
 [list]
 [*] Finishing attack on a downed zombie — separate mechanism
 [*] Charging attack while sprinting — unrelated to the bug
-[*] Stab attack when hitting through a fence/window — legitimate game mechanic, not the bug
+[*] Stab attack when hitting through a fence/window up close — legitimate game mechanic, keeps working normally
 [*] Random variation between normal and stab attacks during regular combat — intentional vanilla behavior
 [/list]
 
@@ -79,5 +83,5 @@ Uses a Java bytecode patch (via [b]ZombieBuddy[/b]) that intercepts the method t
 [*] Workshop ID: [b]3801423705[/b]
 [*] Mod ID: [b]SpearAttackFix[/b]
 [/list]"
-	"changenote"		"item tornado privado ate resolvermos o mod por completo - sem mudanca de conteudo nesta atualizacao."
+	"changenote"		"v2.2.0 - segundo bug corrigido: a estocada disparava 'no ar' sem nada relevante por perto, causada por qualquer janela barricada no mapa carregado (confirmado ate 62 tiles de distancia) - o jogo varre todas as janelas a cada frame sem checagem de distancia antes de avaliar se a lanca pode ultrapassar a barricada. Corrigido pulando essa avaliacao pra janelas fora do alcance realista de arma corpo a corpo, sem afetar o caso legitimo de perto (testado ao vivo). Item volta a ficar publico."
 }
