@@ -20,7 +20,7 @@ Corrige, na origem, dois bugs de combate com lanças: (1) perto de certos obstá
 
 [h2]O que o mod faz[/h2]
 
-Usa patches de bytecode Java (via [b]ZombieBuddy[/b]): intercepta o método que define o tipo de ataque e bloqueia especificamente o golpe por cima bugado (confirmado ser o único lugar em todo o jogo que o define); e intercepta a checagem de barricada de janela, pulando-a quando a janela está fora de qualquer alcance realista de arma corpo a corpo. Nenhuma animação, dano, alcance ou detecção de acerto é alterado nos casos legítimos — o mod impede os gatilhos bugados, em vez de tentar disfarçar o sintoma.
+Usa patches de bytecode Java (via [b]ZombieBuddy[/b]): intercepta o método que define o tipo de ataque e substitui o golpe por cima bugado pela estocada (confirmado ser o único lugar em todo o jogo que define esse valor); e intercepta a checagem de barricada de janela, pulando-a quando a janela está fora de qualquer alcance realista de arma corpo a corpo. Como resultado, a estocada passa a ser o ataque usado de forma consistente tanto atravessando obstáculos quanto a distância — em vez do golpe padrão "vazar" pela cerca/janela com a animação errada.
 
 [b]Requisito obrigatório:[/b] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3619862853]ZombieBuddy[/url] precisa estar instalado e ativado.
 
@@ -28,8 +28,7 @@ Usa patches de bytecode Java (via [b]ZombieBuddy[/b]): intercepta o método que 
 [list]
 [*] Ataque em zumbi já caído no chão (finalização) — mecanismo separado
 [*] Ataque de investida durante corrida (Charge) — sem relação com o bug
-[*] Estocada ao atacar através de cerca/janela de perto — mecanismo legítimo do jogo, continua funcionando normal
-[*] Variação aleatória entre ataque normal e estocada durante combate comum — comportamento vanilla intencional
+[*] Ataque corpo a corpo normal (alvo próximo e não isolado) — continua com a variação padrão do jogo entre golpe normal e estocada
 [/list]
 
 [h2]Compatibilidade[/h2]
@@ -59,7 +58,7 @@ Fixes, at the root, two spear combat bugs: (1) near certain obstacles (tall meta
 
 [h2]What this mod does[/h2]
 
-Uses Java bytecode patches (via [b]ZombieBuddy[/b]): intercepts the method that sets the attack type and specifically blocks the buggy overhead value (confirmed to be the only place in the entire game that sets it); and intercepts the window-barricade check, skipping it when the window is outside any realistic melee range. No animation, damage, range, or hit detection is changed for legitimate cases — the mod prevents the buggy triggers instead of masking the symptom.
+Uses Java bytecode patches (via [b]ZombieBuddy[/b]): intercepts the method that sets the attack type and replaces the buggy overhead value with the stab (confirmed to be the only place in the entire game that sets it); and intercepts the window-barricade check, skipping it when the window is outside any realistic melee range. As a result, the stab becomes the consistent attack used both through obstacles and at range — instead of the default swing "leaking" through fences/windows with the wrong animation.
 
 [b]Required dependency:[/b] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3619862853]ZombieBuddy[/url] must be installed and enabled.
 
@@ -67,8 +66,7 @@ Uses Java bytecode patches (via [b]ZombieBuddy[/b]): intercepts the method that 
 [list]
 [*] Finishing attack on a downed zombie — separate mechanism
 [*] Charging attack while sprinting — unrelated to the bug
-[*] Stab attack when hitting through a fence/window up close — legitimate game mechanic, keeps working normally
-[*] Random variation between normal and stab attacks during regular combat — intentional vanilla behavior
+[*] Regular melee combat (target close by and not isolated) — keeps the game's normal variation between swing and stab
 [/list]
 
 [h2]Compatibility[/h2]
@@ -83,5 +81,5 @@ Uses Java bytecode patches (via [b]ZombieBuddy[/b]): intercepts the method that 
 [*] Workshop ID: [b]3801423705[/b]
 [*] Mod ID: [b]SpearAttackFix[/b]
 [/list]"
-	"changenote"		"v2.2.0 - segundo bug corrigido: a estocada disparava 'no ar' sem nada relevante por perto, causada por qualquer janela barricada no mapa carregado (confirmado ate 62 tiles de distancia) - o jogo varre todas as janelas a cada frame sem checagem de distancia antes de avaliar se a lanca pode ultrapassar a barricada. Corrigido pulando essa avaliacao pra janelas fora do alcance realista de arma corpo a corpo, sem afetar o caso legitimo de perto (testado ao vivo). Item volta a ficar publico."
+	"changenote"		"v2.3.0 - o golpe por cima bugado agora e SUBSTITUIDO pela estocada, em vez de so bloqueado (que deixava o ataque padrao 'vazando' atraves de cercas/janelas com a animacao errada, e a estocada nao saindo de forma consistente a distancia). Testado ao vivo: estocada consistente tanto atravessando cerca com zumbi do outro lado (acerta e causa dano) quanto contra zumbi distante em campo aberto."
 }

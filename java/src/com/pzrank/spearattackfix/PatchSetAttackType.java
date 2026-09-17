@@ -14,13 +14,21 @@ import zombie.AttackType;
  * relatada por varios jogadores desde o B42.18 (sem fix oficial ainda).
  *
  * setAttackType(AttackType.OVERHEAD) so e chamado nesse UNICO lugar em
- * todo o jogo (confirmado via decompilacao) - bloquear especificamente
- * esse valor aqui e seguro, sem afetar nenhum outro uso legitimo.
+ * todo o jogo (confirmado via decompilacao). Em vez de so bloquear (o que
+ * deixava o attackType como estivesse antes - normalmente DEFAULT, do
+ * sorteio inicial em pressedAttack), SUBSTITUIMOS o valor por
+ * AttackType.SPEAR_STAB antes do metodo original rodar. Isso resolve dois
+ * problemas de uma vez:
  *
- * AttackType.SPEAR_STAB (a estocada) NAO e bloqueado aqui - e o mecanismo
- * legitimo de atacar atraves de cerca/janela. A variante "fantasma" dele
- * (aparecendo sem nada relevante por perto, ver [[PatchWindowBypassRange]])
- * e corrigida na origem, entao nao precisa de tratamento especial aqui.
+ * 1) O bug original (golpe lento sem dano) nunca mais acontece - SPEAR_STAB
+ *    e uma animacao que sabemos, por teste real, que registra acerto
+ *    corretamente perto de obstaculos.
+ * 2) Como a condicao que dispara essa troca e exatamente "alvo a mais de
+ *    1.25 tiles E isolado" - praticamente sempre verdadeiro quando ha uma
+ *    cerca/parede separando o jogador do zumbi (a propria cerca garante
+ *    mais de 1 tile de distancia) - a estocada passa a ser o ataque usado
+ *    de forma consistente tanto atraves de obstaculos quanto a distancia,
+ *    em vez do ataque padrao "vazar" pela cerca com a animacao errada.
  */
 @Patch(className = "zombie.characters.IsoPlayer", methodName = "setAttackType")
 public class PatchSetAttackType {
@@ -33,8 +41,10 @@ public class PatchSetAttackType {
     // scanner ignorar essa classe silenciosamente ("no patches in
     // package..." no log) - o patch nunca foi aplicado antes disso ser
     // corrigido (confirmado via log que ficou assim desde a v2.0.0).
-    @Patch.OnEnter(skipOn = true)
-    public static boolean enter(@Patch.Argument(0) AttackType attackType) {
-        return attackType == AttackType.OVERHEAD;
+    @Patch.OnEnter
+    public static void enter(@Patch.Argument(value = 0, readOnly = false) AttackType attackType) {
+        if (attackType == AttackType.OVERHEAD) {
+            attackType = AttackType.SPEAR_STAB;
+        }
     }
 }

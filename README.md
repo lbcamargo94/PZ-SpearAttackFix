@@ -33,23 +33,24 @@ Essa é uma mecânica intencional do jogo (golpe por cima quando o alvo está "d
 
 Usa **patches de bytecode Java** (via [ZombieBuddy](https://steamcommunity.com/sharedfiles/filedetails/?id=3619862853)):
 
-- Intercepta `IsoPlayer.setAttackType()` e bloqueia especificamente o valor `AttackType.OVERHEAD` — confirmado ser o **único lugar em todo o jogo** que define esse valor, então bloqueá-lo não afeta nenhum outro uso legítimo.
+- Intercepta `IsoPlayer.setAttackType()` e **substitui** o valor `AttackType.OVERHEAD` por `AttackType.SPEAR_STAB` — confirmado ser o **único lugar em todo o jogo** que define OVERHEAD, então essa troca não afeta nenhum outro uso legítimo. Como a condição que dispara essa troca (`alvo a mais de 1.25 tiles E isolado`) é praticamente sempre verdadeira quando há um obstáculo separando o jogador do zumbi, a estocada passa a ser o ataque usado de forma consistente tanto atravessando obstáculos quanto a distância — em vez do golpe padrão "vazar" através de cercas/janelas com a animação errada.
 - Intercepta `IsoWindow.canAttackBypassIsoBarricade()` e pula a avaliação (sem chegar a chamar o efeito colateral perigoso) quando a janela está fora de qualquer alcance realista de arma corpo a corpo (10 tiles). Perto o suficiente pra importar de verdade, a checagem roda normal — não afeta o caso legítimo de atacar através de janela/cerca de perto.
 
-Nenhuma animação, dano, alcance ou detecção de acerto é modificado — o mod impede que os gatilhos bugados aconteçam, em vez de tentar consertar o sintoma depois.
+Nenhum dano, alcance ou detecção de acerto é modificado — o mod corrige o tipo de ataque usado nos gatilhos bugados, em vez de tentar consertar o sintoma depois.
 
 > **Nota técnica (histórico):** as versões v1.0.0 e v1.1.0 tentavam corrigir o bug 1 via arquivos de animação (`AnimSets`), trocando qual clipe tocava ou sua velocidade. Testes reais mostraram que isso não resolvia a detecção de acerto — a causa real não estava na animação, e sim no valor `AttackType` sendo forçado incorretamente pelo motor do jogo. A v2.0.0 corrige na origem.
 >
 > **Nota técnica (v2.1.0):** a v2.0.0 declarava a classe do patch Java num pacote (`com.pzrank.spearattackfix.patches`) diferente do `javaPkgName` do `mod.info` (`com.pzrank.spearattackfix`). O ZombieBuddy exige igualdade exata de pacote para reconhecer uma classe como patch — por isso o bloqueio nunca chegou a ser aplicado de verdade, mesmo com o mod "carregando" sem erro nenhum. A v2.1.0 corrige movendo a classe pro pacote certo.
 >
 > **Nota técnica (v2.2.0):** identificado e corrigido o bug 2 (estocada fantasma), descrito acima. Confirmado ao vivo via logging de diagnóstico: antes do fix, a estocada disparava continuamente por uma janela barricada a 62 tiles; depois do fix, zero disparos, sem afetar o combate normal.
+>
+> **Nota técnica (v2.3.0):** a v2.2.0 apenas bloqueava OVERHEAD (deixando `attackType` como estivesse antes - normalmente o golpe padrão, do sorteio inicial do jogo), o que ainda deixava o golpe padrão "vazando" através de cercas/janelas com a animação errada, e a estocada não saindo de forma consistente a distância. A v2.3.0 substitui OVERHEAD por SPEAR_STAB em vez de só bloquear, resolvendo os dois casos de uma vez. Testado ao vivo: estocada consistente tanto atravessando cerca com zumbi do outro lado (acertando e causando dano) quanto contra zumbi distante em campo aberto.
 
 ### O que não é afetado (de propósito)
 
 - **Ataque em zumbi caído no chão** (`SpearOnFloor`) — mecanismo separado, sem relação com os bugs
 - **Ataque de investida durante corrida** (`SpearCharge`) — independente, sem relação
-- **Ataque de estocada atravessando cerca/janela de perto** (`AttackType.SPEAR_STAB`) — mecanismo legítimo do jogo, continua funcionando normalmente
-- **Variação aleatória Stab vs Default** durante combate normal — comportamento vanilla intencional, não é bug
+- **Ataque corpo a corpo normal** (alvo próximo e não isolado) — continua com a variação padrão do jogo entre golpe normal e estocada
 
 ## Requisitos
 

@@ -1,7 +1,7 @@
 name=Spear Attack Fix
 id=SpearAttackFix
-description=Corrige na origem dois bugs de combate com lanca: o ataque "golpe por cima" forcado incorretamente perto de obstaculos, e a estocada disparando sem motivo perto de janelas barricadas distantes. Usa patches Java (via ZombieBuddy) nos metodos exatos que causam os bugs, em vez de mexer nas animacoes.
-modversion=2.2.0
+description=Corrige na origem os bugs de combate com lanca perto de obstaculos: o ataque "golpe por cima" que nao registrava dano agora vira estocada (que funciona corretamente atraves de cercas/janelas e a distancia), e a estocada fantasma disparando sem motivo perto de janelas barricadas distantes foi eliminada. Usa patches Java (via ZombieBuddy) nos metodos exatos que causam os bugs.
+modversion=2.3.0
 pzversion=42
 poster=poster.png
 require=\ZombieBuddy
