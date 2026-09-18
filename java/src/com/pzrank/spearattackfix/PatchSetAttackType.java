@@ -29,6 +29,15 @@ import zombie.AttackType;
  *    mais de 1 tile de distancia) - a estocada passa a ser o ataque usado
  *    de forma consistente tanto atraves de obstaculos quanto a distancia,
  *    em vez do ataque padrao "vazar" pela cerca com a animacao errada.
+ *
+ * NOTA (testado ao vivo, revertido): uma versao intermediaria tentou usar
+ * SPEAR_STAB so quando havia obstaculo de verdade (lendo se
+ * canAttackPierceTransparentWall ja tinha rodado), caindo pra DEFAULT sem
+ * obstaculo - a ideia era evitar o angulo meio "pra cima" da animacao de
+ * estocada em combate aberto (relatado como visualmente estranho). Porem
+ * isso fez a estocada sumir completamente do combate a distancia sem
+ * obstaculo, que era exatamente o comportamento pedido originalmente -
+ * revertido de volta pra substituicao incondicional.
  */
 @Patch(className = "zombie.characters.IsoPlayer", methodName = "setAttackType")
 public class PatchSetAttackType {

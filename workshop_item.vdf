@@ -8,7 +8,7 @@
 	"title"		"Spear Attack Fix"
 	"description"		"[h1]BR - Spear Attack Fix[/h1]
 
-Corrige, na origem, dois bugs de combate com lanças: (1) perto de certos obstáculos (cercas altas de metal, por exemplo), o jogo força um ataque [i]golpe por cima[/i] bem mais lento, e o acerto frequentemente não registra — o som toca, mas o zumbi não recebe dano; (2) a animação de estocada pode disparar "no ar", sem zumbi nem obstáculo visível por perto, causada por uma janela barricada em qualquer lugar do mapa carregado, mesmo a dezenas de tiles de distância. Bug 1 relatado pela comunidade desde o Build 42.18, sem correção oficial ainda.
+Corrige, na origem, dois bugs de combate com lanças: (1) perto de certos obstáculos (cercas altas de metal, por exemplo), o jogo força um ataque [i]golpe por cima[/i] bem mais lento, e o acerto frequentemente não registra — o som toca, mas o zumbi não recebe dano; (2) a animação de estocada pode disparar [i]no ar[/i], sem zumbi nem obstáculo visível por perto, causada por uma janela barricada em qualquer lugar do mapa carregado, mesmo a dezenas de tiles de distância. Bug 1 relatado pela comunidade desde o Build 42.18, sem correção oficial ainda.
 
 [hr][/hr]
 
@@ -20,7 +20,7 @@ Corrige, na origem, dois bugs de combate com lanças: (1) perto de certos obstá
 
 [h2]O que o mod faz[/h2]
 
-Usa patches de bytecode Java (via [b]ZombieBuddy[/b]): intercepta o método que define o tipo de ataque e substitui o golpe por cima bugado pela estocada (confirmado ser o único lugar em todo o jogo que define esse valor); e intercepta a checagem de barricada de janela, pulando-a quando a janela está fora de qualquer alcance realista de arma corpo a corpo. Como resultado, a estocada passa a ser o ataque usado de forma consistente tanto atravessando obstáculos quanto a distância — em vez do golpe padrão "vazar" pela cerca/janela com a animação errada.
+Usa patches de bytecode Java (via [b]ZombieBuddy[/b]): intercepta o método que define o tipo de ataque e substitui o golpe por cima bugado pela estocada (confirmado ser o único lugar em todo o jogo que define esse valor); e intercepta a checagem de barricada de janela, pulando-a quando a janela está fora de qualquer alcance realista de arma corpo a corpo. Como resultado, a estocada passa a ser o ataque usado de forma consistente tanto atravessando obstáculos quanto a distância — em vez do golpe padrão [i]vazar[/i] pela cerca/janela com a animação errada.
 
 [b]Requisito obrigatório:[/b] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3619862853]ZombieBuddy[/url] precisa estar instalado e ativado.
 
@@ -48,7 +48,7 @@ Usa patches de bytecode Java (via [b]ZombieBuddy[/b]): intercepta o método que 
 
 [h1]EN - Spear Attack Fix[/h1]
 
-Fixes, at the root, two spear combat bugs: (1) near certain obstacles (tall metal fences, for example), the game forces a much slower [i]overhead[/i] attack, and the hit frequently fails to register — the sound plays, but the zombie takes no damage; (2) the stab animation can trigger "in mid-air", with no zombie or obstacle visible nearby, caused by a barricaded window anywhere on the loaded map, even dozens of tiles away. Bug 1 reported by the community since Build 42.18, with no official fix yet.
+Fixes, at the root, two spear combat bugs: (1) near certain obstacles (tall metal fences, for example), the game forces a much slower [i]overhead[/i] attack, and the hit frequently fails to register — the sound plays, but the zombie takes no damage; (2) the stab animation can trigger [i]in mid-air[/i], with no zombie or obstacle visible nearby, caused by a barricaded window anywhere on the loaded map, even dozens of tiles away. Bug 1 reported by the community since Build 42.18, with no official fix yet.
 
 [h2]The root cause[/h2]
 
@@ -58,7 +58,7 @@ Fixes, at the root, two spear combat bugs: (1) near certain obstacles (tall meta
 
 [h2]What this mod does[/h2]
 
-Uses Java bytecode patches (via [b]ZombieBuddy[/b]): intercepts the method that sets the attack type and replaces the buggy overhead value with the stab (confirmed to be the only place in the entire game that sets it); and intercepts the window-barricade check, skipping it when the window is outside any realistic melee range. As a result, the stab becomes the consistent attack used both through obstacles and at range — instead of the default swing "leaking" through fences/windows with the wrong animation.
+Uses Java bytecode patches (via [b]ZombieBuddy[/b]): intercepts the method that sets the attack type and replaces the buggy overhead value with the stab (confirmed to be the only place in the entire game that sets it); and intercepts the window-barricade check, skipping it when the window is outside any realistic melee range. As a result, the stab becomes the consistent attack used both through obstacles and at range — instead of the default swing [i]leaking[/i] through fences/windows with the wrong animation.
 
 [b]Required dependency:[/b] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3619862853]ZombieBuddy[/url] must be installed and enabled.
 
@@ -81,5 +81,5 @@ Uses Java bytecode patches (via [b]ZombieBuddy[/b]): intercepts the method that 
 [*] Workshop ID: [b]3801423705[/b]
 [*] Mod ID: [b]SpearAttackFix[/b]
 [/list]"
-	"changenote"		"v2.3.0 - o golpe por cima bugado agora e SUBSTITUIDO pela estocada, em vez de so bloqueado (que deixava o ataque padrao 'vazando' atraves de cercas/janelas com a animacao errada, e a estocada nao saindo de forma consistente a distancia). Testado ao vivo: estocada consistente tanto atravessando cerca com zumbi do outro lado (acerta e causa dano) quanto contra zumbi distante em campo aberto."
+	"changenote"		"v2.3.0.1 - fix: descricao cortada na publicacao anterior (aspas retas dentro do texto fechavam a string VDF prematuramente, mesmo bug ja visto antes nesse mod). Sem mudanca no mod em si - continua v2.3.0 (golpe por cima bugado substituido pela estocada, testado ao vivo)."
 }
