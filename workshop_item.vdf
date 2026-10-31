@@ -8,7 +8,7 @@
 	"title"		"Spear Attack Fix"
 	"description"		"[h1]BR - Spear Attack Fix[/h1]
 
-[b]v2.4.0: a lança agora usa SEMPRE o ataque de fatiada.[/b] O golpe por cima e a estocada viram fatiada em qualquer situação — perto de cercas e janelas, contra zumbi a distância e em campo aberto —, com o dano e o crítico da fatiada.
+[b]v2.5.0: a lança voltou a ter identidade.[/b] Através de cerca e janela sai a [b]estocada[/b]; no resto, a [b]fatiada[/b]. O golpe por cima bugado nunca sai. Ponto ideal na ponta: com o zumbi a menos de 1 tile, a fatiada causa 40% menos dano e não dá crítico. A 1 tile ou mais, dano e crítico normais.
 
 Corrige, na origem, dois bugs de combate com lanças: (1) perto de certos obstáculos (cercas altas de metal, por exemplo), o jogo força um ataque [i]golpe por cima[/i] bem mais lento, e o acerto frequentemente não registra — o som toca, mas o zumbi não recebe dano; (2) a animação de estocada pode disparar [i]no ar[/i], sem zumbi nem obstáculo visível por perto, causada por uma janela barricada em qualquer lugar do mapa carregado, mesmo a dezenas de tiles de distância. Bug 1 relatado pela comunidade desde o Build 42.18, sem correção oficial ainda.
 
@@ -22,7 +22,7 @@ Corrige, na origem, dois bugs de combate com lanças: (1) perto de certos obstá
 
 [h2]O que o mod faz[/h2]
 
-Usa patches de bytecode Java (via [b]ZombieBuddy[/b]): intercepta o método que define o tipo de ataque e, quando a arma é uma lança, troca o golpe por cima e a estocada pelo ataque padrão — a [b]fatiada[/b]. Como o tipo do ataque muda de verdade (não só a animação), o jogo usa a detecção de acerto da própria fatiada e o dano sai normalmente, inclusive através de cercas e janelas. Também intercepta a checagem de barricada de janela, pulando-a quando a janela está fora de qualquer alcance realista de arma corpo a corpo. Outras armas (1 mão, 2 mãos, pesadas) não são afetadas.
+Usa patches de bytecode Java (via [b]ZombieBuddy[/b]): intercepta o método que define o tipo de ataque e, quando a arma é uma lança, nunca deixa sair o golpe por cima. Com alvo atrás de cerca ou janela sai a [b]estocada[/b]; sem isso, a [b]fatiada[/b]. Como o tipo do ataque muda de verdade (não só a animação), o jogo usa a detecção de acerto do próprio ataque e o dano sai normalmente. Na fatiada, patches no sorteio de crítico e no dano aplicam o ponto ideal. Também intercepta a checagem de barricada de janela, pulando-a quando a janela está fora de qualquer alcance realista de arma corpo a corpo. Outras armas (1 mão, 2 mãos, pesadas) não são afetadas.
 
 [b]Requisito obrigatório:[/b] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3619862853]ZombieBuddy[/url] precisa estar instalado e ativado.
 
@@ -30,6 +30,7 @@ Usa patches de bytecode Java (via [b]ZombieBuddy[/b]): intercepta o método que 
 [list]
 [*] Ataque em zumbi já caído no chão (finalização) — mecanismo separado
 [*] Ataque de investida durante corrida (Charge) — sem relação com o bug
+[*] Abate furtivo por trás de zumbi que não te viu — continua valendo mesmo colado
 [*] Armas que não são lança — continuam com os ataques normais do jogo
 [/list]
 
@@ -50,7 +51,7 @@ Usa patches de bytecode Java (via [b]ZombieBuddy[/b]): intercepta o método que 
 
 [h1]EN - Spear Attack Fix[/h1]
 
-[b]v2.4.0: spears now ALWAYS use the slash attack.[/b] The overhead swing and the stab become a slash in every situation — near fences and windows, against distant zombies and in the open —, with the slash's damage and critical hit.
+[b]v2.5.0: spears get their identity back.[/b] Through fences and windows the spear uses the [b]stab[/b]; everywhere else, the [b]slash[/b]. The buggy overhead swing never happens. Sweet spot at the tip: with the zombie closer than 1 tile, the slash deals 40% less damage and cannot crit. At 1 tile or more, damage and crits are normal.
 
 Fixes, at the root, two spear combat bugs: (1) near certain obstacles (tall metal fences, for example), the game forces a much slower [i]overhead[/i] attack, and the hit frequently fails to register — the sound plays, but the zombie takes no damage; (2) the stab animation can trigger [i]in mid-air[/i], with no zombie or obstacle visible nearby, caused by a barricaded window anywhere on the loaded map, even dozens of tiles away. Bug 1 reported by the community since Build 42.18, with no official fix yet.
 
@@ -62,7 +63,7 @@ Fixes, at the root, two spear combat bugs: (1) near certain obstacles (tall meta
 
 [h2]What this mod does[/h2]
 
-Uses Java bytecode patches (via [b]ZombieBuddy[/b]): intercepts the method that sets the attack type and, when the weapon is a spear, replaces the overhead swing and the stab with the default attack — the [b]slash[/b]. Since the attack type really changes (not just the animation), the game uses the slash's own hit detection and damage lands normally, including through fences and windows. It also intercepts the window-barricade check, skipping it when the window is outside any realistic melee range. Other weapons (1-handed, 2-handed, heavy) are not affected.
+Uses Java bytecode patches (via [b]ZombieBuddy[/b]): intercepts the method that sets the attack type and, when the weapon is a spear, never lets the overhead swing happen. With a target behind a fence or window it uses the [b]stab[/b]; otherwise, the [b]slash[/b]. Since the attack type really changes (not just the animation), the game uses that attack's own hit detection and damage lands normally. On the slash, patches on the crit roll and on damage apply the sweet spot. It also intercepts the window-barricade check, skipping it when the window is outside any realistic melee range. Other weapons (1-handed, 2-handed, heavy) are not affected.
 
 [b]Required dependency:[/b] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3619862853]ZombieBuddy[/url] must be installed and enabled.
 
@@ -70,6 +71,7 @@ Uses Java bytecode patches (via [b]ZombieBuddy[/b]): intercepts the method that 
 [list]
 [*] Finishing attack on a downed zombie — separate mechanism
 [*] Charging attack while sprinting — unrelated to the bug
+[*] Stealth kill from behind on a zombie that hasn't seen you — still works up close
 [*] Weapons that are not spears — keep the game's normal attacks
 [/list]
 
@@ -85,5 +87,5 @@ Uses Java bytecode patches (via [b]ZombieBuddy[/b]): intercepts the method that 
 [*] Workshop ID: [b]3801423705[/b]
 [*] Mod ID: [b]SpearAttackFix[/b]
 [/list]"
-	"changenote"		"v2.4.0 - a lanca agora usa SEMPRE a fatiada: golpe por cima e estocada viram fatiada em qualquer situacao (cercas, janelas, distancia e campo aberto), com dano e critico da fatiada. So afeta lancas. Investida correndo e ataque no chao continuam iguais. / v2.4.0 - spears now ALWAYS use the slash: overhead and stab become a slash in every situation, with the slash damage and crit. Spears only."
+	"changenote"		"v2.5.0 - balanceamento: atraves de cerca e janela a lanca volta a usar a estocada; no resto, a fatiada. O golpe por cima continua fora. Com o zumbi a menos de 1 tile, a fatiada causa 40% menos dano e nao da critico. So afeta lancas. / v2.5.0 - balance: spears use the stab through fences and windows and the slash everywhere else. The overhead swing stays out. With the zombie closer than 1 tile, the slash deals 40% less damage and cannot crit. Spears only."
 }
