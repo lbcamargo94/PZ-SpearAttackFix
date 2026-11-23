@@ -1,7 +1,7 @@
 name=Spear Attack Fix
 id=SpearAttackFix
 description=Lanca com identidade: o golpe por cima bugado nunca sai. Atraves de cerca e janela a lanca usa a estocada; no resto, a fatiada. Ponto ideal na ponta: colado no zumbi (menos de 1 tile) a fatiada causa 40% menos dano e nao da critico. Corrige tambem a estocada fantasma de janelas barricadas distantes. Patches Java via ZombieBuddy.
-modversion=2.5.0
+modversion=2.5.1
 pzversion=42
 poster=poster.png
 require=\ZombieBuddy

@@ -36,7 +36,7 @@ Usa patches de bytecode Java (via [b]ZombieBuddy[/b]): intercepta o método que 
 
 [h2]Compatibilidade[/h2]
 [list]
-[*] [b]Build 42.21.x[/b] — Single Player e Multiplayer
+[*] [b]Build 42.22.x[/b] — Single Player e Multiplayer
 [*] Não toca em saves, personagens ou itens existentes
 [*] Seguro para adicionar ou remover de uma run em andamento
 [/list]
@@ -77,7 +77,7 @@ Uses Java bytecode patches (via [b]ZombieBuddy[/b]): intercepts the method that 
 
 [h2]Compatibility[/h2]
 [list]
-[*] [b]Build 42.21.x[/b] — Single Player and Multiplayer
+[*] [b]Build 42.22.x[/b] — Single Player and Multiplayer
 [*] Does not touch saves, characters, or existing items
 [*] Safe to add or remove mid-run
 [/list]
@@ -87,5 +87,5 @@ Uses Java bytecode patches (via [b]ZombieBuddy[/b]): intercepts the method that 
 [*] Workshop ID: [b]3801423705[/b]
 [*] Mod ID: [b]SpearAttackFix[/b]
 [/list]"
-	"changenote"		"v2.5.0 - balanceamento: atraves de cerca e janela a lanca volta a usar a estocada; no resto, a fatiada. O golpe por cima continua fora. Com o zumbi a menos de 1 tile, a fatiada causa 40% menos dano e nao da critico. So afeta lancas. / v2.5.0 - balance: spears use the stab through fences and windows and the slash everywhere else. The overhead swing stays out. With the zombie closer than 1 tile, the slash deals 40% less damage and cannot crit. Spears only."
+	"changenote"		"v2.5.1 - compatibilidade com o Build 42.22: corrige os erros no log ao atacar com a lanca (o jogo mudou um metodo de combate). / Build 42.22 compatibility: fixes the errors in the log when attacking with a spear."
 }

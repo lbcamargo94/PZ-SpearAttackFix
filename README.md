@@ -48,6 +48,8 @@ Usa **patches de bytecode Java** (via [ZombieBuddy](https://steamcommunity.com/s
 >
 > **Nota técnica (v2.5.0):** balanceamento, porque na v2.4.0 a lança virou uma arma qualquer. A estocada volta através de cerca e janela, só com alvo real atrás do obstáculo, e entra o ponto ideal na ponta. O golpe por cima continua fora.
 
+> **Nota técnica (v2.5.1):** no Build 42.22, `IsoGameCharacter.getHitInfoList()` passou a retornar `ArrayList` em vez de `PZArrayList`. Como o tipo de retorno faz parte da assinatura no bytecode, o jar compilado contra o 42.21 dava `NoSuchMethodError` no ataque com lança. Recompilado contra o 42.22.2; o código-fonte não mudou.
+
 > **Nota técnica (v2.3.0):** a v2.2.0 apenas bloqueava OVERHEAD (deixando `attackType` como estivesse antes - normalmente o golpe padrão, do sorteio inicial do jogo), o que ainda deixava o golpe padrão "vazando" através de cercas/janelas com a animação errada, e a estocada não saindo de forma consistente a distância. A v2.3.0 substitui OVERHEAD por SPEAR_STAB em vez de só bloquear, resolvendo os dois casos de uma vez. Testado ao vivo: estocada consistente tanto atravessando cerca com zumbi do outro lado (acertando e causando dano) quanto contra zumbi distante em campo aberto.
 
 ### O que não é afetado (de propósito)
@@ -65,7 +67,8 @@ Usa **patches de bytecode Java** (via [ZombieBuddy](https://steamcommunity.com/s
 
 | Build | Suporte |
 |-------|---------|
-| 42.21.x | ✔ Compatível (Single Player e Multiplayer) |
+| 42.22.x | ✔ Compatível (Single Player e Multiplayer) |
+| 42.21.x | só até a v2.5.0 (a v2.5.1 foi compilada contra o 42.22) |
 
 ## IDs
 
